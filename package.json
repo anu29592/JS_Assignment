@@ -1,7 +1,7 @@
 {
-    "name": "singlepage",
+    "name": "codeChallenge",
     "version": "1.0.0",
-    "description": "using sockets",  
+    "description": "ArcGIS",  
     "main": "app.js",  
     "author": {
       "name": "Archana"
