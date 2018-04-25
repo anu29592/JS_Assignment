@@ -1,0 +1,14 @@
+{
+    "name": "singlepage",
+    "version": "1.0.0",
+    "description": "using sockets",  
+    "main": "app.js",  
+    "author": {
+      "name": "Archana"
+    },
+    "license": "ISC",
+    "Dependencies": {
+       
+        
+    }
+  }  

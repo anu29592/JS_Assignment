@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <link rel="stylesheet" href="https://js.arcgis.com/3.24/esri/css/esri.css">
+  <script src="https://js.arcgis.com/3.24/"></script>
+  <link rel="stylesheet" href="https://js.arcgis.com/4.7/esri/css/view.css">
+
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no">
+  <title></title>
+
+  <style>
+    html,
+    body,
+    #map {
+      height: 100%;
+      width: 100%;
+      padding: 0;
+      margin: 0;
+    }
+    .sassy-theme .esri-widget{
+  background-color: #c69;
+  color: #fff;
+}
+  </style>  
+</head>
+
+
+<script>
+  require(["esri/map",
+    "esri/layers/FeatureLayer",
+
+    "esri/renderers/SimpleRenderer",
+    "esri/symbols/SimpleMarkerSymbol",
+
+    "esri/InfoTemplate",
+    "esri/symbols/SimpleLineSymbol",
+
+
+    "dojo/_base/declare",
+    "dojo/dom-construct",
+    "dojo/ready",
+    "dojo/parser",
+    "dijit/_WidgetBase",
+    "dijit/_TemplatedMixin",
+
+
+
+
+
+    'esri/geometry/webMercatorUtils',
+    'dojo/number',
+
+    "dojo/domReady!"
+  ], function (Map, FeatureLayer, SimpleRenderer, SimpleMarkerSymbol, InfoTemplate, SimpleLineSymbol, declare,domConstruct,
+    ready, parser, _WidgetBase, _TemplatedMixin, webMercatorUtils, number) {
+
+
+
+    var map = new Map("map", {
+      basemap: "dark-gray-vector",
+      center: [-85.050200, 33.125524],
+      zoom: 6
+
+    });
+
+
+
+    var template = new InfoTemplate("${CITY_NAME}", " Population:<i>${POP}</i><br> ");
+
+    var featureLayer = new FeatureLayer(
+      "https://services1.arcgis.com/XRQ58kpEa17kSlHX/ArcGIS/rest/services/World_Cities/FeatureServer/0", {
+        mode: FeatureLayer.MODE_ONDEMAND,
+        orderByFields: ["POP DESC"],
+        outFields: ["CITY_NAME", "POP"],
+        infoTemplate: template
+      });
+
+    map.addLayers([featureLayer]);
+
+
+
+    var marker = new SimpleMarkerSymbol().setPath("M14.5,29 23.5,0 14.5,9 5.5,0z").setColor([255, 0, 0]).setOutline(
+      new SimpleLineSymbol().setWidth(0.5));
+    //     var markerSym = new SimpleMarkerSymbol({
+    //     type: "simple-marker",
+    //     color: "palegreen",
+    //     outline: { // autocasts as new SimpleLineSymbol()
+    //           color: "seagreen",
+    //           width: 0.5
+    //         }
+    // });
+
+
+    var renderer = new SimpleRenderer(marker);
+
+
+    renderer.setSizeInfo({
+      field: "POP",
+      minSize: 8,
+      maxSize: 50,
+      minDataValue: 50000,
+      maxDataValue: 5000000,
+      valueUnit: "unknown"
+
+
+    });
+
+    featureLayer.setRenderer(renderer);
+
+    // function addPoint(evt) {
+    //         var latitude = evt.mapPoint.getLatitude();
+    //         var longitude = evt.mapPoint.getLongitude();
+
+    //         map.infoWindow.setTitle("Coordinates");
+    //         map.infoWindow.setContent(
+    //           "lat/lon : " + latitude.toFixed(2) + ", " + longitude.toFixed(2) + 
+    //           "<br>screen x/y : " + evt.screenPoint.x + ", " + evt.screenPoint.y
+    //         )};
+
+
+    declare("coordinatesDijit", [_WidgetBase, _TemplatedMixin], {
+      _i: 0,
+
+
+      buildRendering: function(){
+            // create the DOM for this widget
+            this.domNode =  domConstruct.create("label", {innerHTML:'co-ordinates' });
+            
+           
+        },
+        
+
+        postCreate: function(){
+            // every time the user clicks the button, increment the counter
+            this.connect(this.map, "onclick", "lonlat");
+        },
+
+        lonlat: function (evt) {
+        var latitude = evt.mapPoint.getLatitude();
+        var longitude = evt.mapPoint.getLongitude();
+        this.domNode.innerHTML= "co-ordinates"+
+        "<br>latitude : " + latitude + ", "  +
+        "<br>longitude : "  + longitude
+         
+        },
+
+
+
+
+    });
+
+    ready(function(){
+        // Call the parser manually so it runs after our widget is defined, and page has finished loading
+        parser.parse();
+    });
+  });
+</script>
+
+<body class="claro">
+  <div id="map">
+
+
+  </div>
+  <div style="font-family: Lucida Grande,Helvetica,Arial,Verdana,sans-serif; font-size: 14px; position: absolute; right: 7px; top: 7px; z-index: 100; padding: 5px; border: 2px solid #666666; border-radius: 5px; background-color: white; width:175px;">
+    <div style="padding: 6px; text-align: center;">
+      
+      <span data-dojo-type="coordinatesDijit" data-dojo-attach-event='onclick: lonlat'> &nbsp;</span>
+
+
+    </div>
+
+
+  </div>
+
+
+</body>
+
+</html>
