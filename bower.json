@@ -1,0 +1,21 @@
+{
+  "name": "codeChallenge",
+  "description": "ArcGIS",
+  "main": "app.js",
+  "authors": [
+    "[Archana A]"
+  ],
+  "license": "ISC",
+  "homepage": "https://github.com/anu29592/JS_Assignment",
+  "dependencies": {
+    "esri": "arcgis-js-api#3.24.0"
+  },
+  "resolutions": {
+    "dojo": "v1.13.0/esri-3.24.0",
+    "dojox": "v1.13.0/esri-3.23.0",
+    "dijit": "v1.13.0/esri-3.23.0",
+    "util": "Esri/dojo-util#v1.13.0/esri-3.24.0",
+    "dgrid1": "v1.13.0/esri-3.23.0",
+    "dstore": "1.1.2"
+  }
+}
